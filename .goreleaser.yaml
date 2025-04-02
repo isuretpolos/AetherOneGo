@@ -1,5 +1,7 @@
 project_name: AetherOneGo
 builds:
+  - main: ./go/main.go
+    binary: AetherOneGo
   - env: [CGO_ENABLED=0]
     goos:
       - linux
