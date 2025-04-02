@@ -1,8 +1,13 @@
+version: 2
+
 project_name: AetherOneGo
+
 builds:
-  - main: ./go/main.go
+  - id: aetheronego
+    main: ./go/main.go
     binary: AetherOneGo
-  - env: [CGO_ENABLED=0]
+    env:
+      - CGO_ENABLED=0
     goos:
       - linux
       - windows
@@ -10,6 +15,7 @@ builds:
     goarch:
       - amd64
       - arm64
+
 dockers:
   - image_templates: ["ghcr.io/isuretpolos/AetherOneGo:{{ .Version }}"]
     dockerfile: Dockerfile
@@ -22,6 +28,7 @@ dockers:
       - --label=org.opencontainers.image.created={{ time "2006-01-02T15:04:05Z07:00" }}
       - --label=org.opencontainers.image.revision={{ .FullCommit }}
       - --label=org.opencontainers.image.licenses=MIT
+
 nfpms:
   - maintainer: Isuret Polos <isuret.polos@gmail.com>
     description: AetherOneGo
