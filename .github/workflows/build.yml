@@ -19,7 +19,7 @@ jobs:
         with:
           go-version: 1.24.1
           cache: true
-      - run: go mod tidy
+      - run: ls -l && go mod tidy
         working-directory: ./go
       - run: go test -v ./...
         working-directory: ./go
