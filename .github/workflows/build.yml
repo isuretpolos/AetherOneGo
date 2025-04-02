@@ -19,10 +19,8 @@ jobs:
         with:
           go-version: 1.24.1
           cache: true
-      - run: ls -l && go mod tidy
-        working-directory: ./go
-      - run: go test -v ./...
-        working-directory: ./go
+      - run: cd go && ls -l && go mod tidy
+      - run: cd go && go test -v ./...
       - uses: docker/login-action@v1
         with:
           registry: ghcr.io
