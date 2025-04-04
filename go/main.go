@@ -10,6 +10,7 @@ import (
 	"path/filepath"
 	"runtime"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -103,7 +104,7 @@ func generateHandler(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 	runtime.GOMAXPROCS(runtime.NumCPU())
-	port := flag.Int("port", 8080, "Port to serve on")
+	port := flag.Int("port", 80, "Port to serve on")
 	staticDir := flag.String("static", "./static", "Directory to serve static files from")
 	flag.Parse()
 
@@ -111,7 +112,13 @@ func main() {
 
 	// Serve static files
 	fs := http.FileServer(http.Dir(filepath.Clean(*staticDir)))
-	http.Handle("/", fs)
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		if strings.HasSuffix(r.URL.Path, ".js") {
+			w.Header().Set("Content-Type", "application/javascript")
+			w.Header().Set("content-encoding", "utf-8")
+		}
+		fs.ServeHTTP(w, r)
+	})
 
 	// REST API
 	http.HandleFunc("/generate", generateHandler)
