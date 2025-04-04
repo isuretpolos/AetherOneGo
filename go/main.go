@@ -105,7 +105,7 @@ func generateHandler(w http.ResponseWriter, r *http.Request) {
 func main() {
 	runtime.GOMAXPROCS(runtime.NumCPU())
 	port := flag.Int("port", 80, "Port to serve on")
-	staticDir := flag.String("static", "./static", "Directory to serve static files from")
+	staticDir := flag.String("static", "./static/AetherOneGo", "Directory to serve static files from")
 	flag.Parse()
 
 	rand.Seed(time.Now().UnixNano())
