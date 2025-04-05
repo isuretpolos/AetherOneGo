@@ -15,3 +15,6 @@ cd $GOPATH/src/github.com/isuretpolos/AetherOneGo
 go build
 ```
 
+# Versions
+- 0.2.0 Three.js / Vite / UI embedded in Go
+- 0.1.0 GoReleaser
