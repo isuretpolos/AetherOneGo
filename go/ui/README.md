@@ -13,6 +13,7 @@ npm install
 ```
 
 ## Run
+The shortest way to success is just to run the application locally and see if your changes work. Note what is written under the section on "Design".
 ```bash
 npm run dev
 ```
@@ -26,8 +27,8 @@ npm run build
 ```
 
 # Design
-I use Blender for the scene.
+I use Blender for the scene. You could use theoretically any other 3D application like Maya or Cinema4D.
 
-Export the blender scene as a glTF file, specifically as glp binary format, into the folder public/models.
+Export the scene as a glTF file, specifically as glp binary format, into the folder public/models. Please don't remove lights and camera, because they will be imported too into the three.js scene. Else they would missing and you're scene does not work anymore.
 
 Check it with https://threejs.org/editor/, just drag and drop the glTF file into the editor. See if everything looks good. Note the the lights might be too strong. I already included a fix in the main.js during loading the scene.
