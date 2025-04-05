@@ -1,18 +1,21 @@
 package main
 
 import (
+	"embed"
 	"encoding/json"
 	"flag"
 	"fmt"
+	"io/fs"
 	"log"
 	"math/rand"
 	"net/http"
-	"path/filepath"
 	"runtime"
 	"strconv"
-	"strings"
 	"time"
 )
+
+//go:embed ui/dist/*
+var embeddedFiles embed.FS
 
 type Result struct {
 	Numbers []uint32 `json:"numbers"`
@@ -104,26 +107,21 @@ func generateHandler(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 	runtime.GOMAXPROCS(runtime.NumCPU())
-	port := flag.Int("port", 80, "Port to serve on")
-	staticDir := flag.String("static", "./static/AetherOneGo", "Directory to serve static files from")
+	port := flag.Int("port", 8080, "Port to serve on")
 	flag.Parse()
 
 	rand.Seed(time.Now().UnixNano())
 
-	// Serve static files
-	fs := http.FileServer(http.Dir(filepath.Clean(*staticDir)))
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		if strings.HasSuffix(r.URL.Path, ".js") {
-			w.Header().Set("Content-Type", "application/javascript")
-			w.Header().Set("content-encoding", "utf-8")
-		}
-		fs.ServeHTTP(w, r)
-	})
+	// Create a sub-filesystem for the embedded "static" directory
+	staticFiles, err := fs.Sub(embeddedFiles, "ui/dist")
+	if err != nil {
+		log.Fatal(err)
+	}
+	http.Handle("/", http.FileServer(http.FS(staticFiles)))
 
-	// REST API
 	http.HandleFunc("/generate", generateHandler)
 
 	addr := fmt.Sprintf(":%d", *port)
-	log.Printf("Serving on http://localhost%s (static folder: %s)", addr, *staticDir)
+	log.Printf("Serving embedded static files on http://localhost%s", addr)
 	log.Fatal(http.ListenAndServe(addr, nil))
 }
