@@ -19,6 +19,9 @@ builds:
 archives:
   - format: tar.gz
     name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+    format_overrides:
+    - goos: windows
+      formats: ["zip"]
 
 nfpms:
   - maintainer: Isuret Polos <isuret.polos@gmail.com>
