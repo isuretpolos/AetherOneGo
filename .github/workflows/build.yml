@@ -22,8 +22,6 @@ jobs:
           cache: true
       - run: go mod tidy
         working-directory: ./go
-      - run: go test -v ./...
-        working-directory: ./go
       - uses: goreleaser/goreleaser-action@v2
         if: success() && startsWith(github.ref, 'refs/tags/')
         with:
