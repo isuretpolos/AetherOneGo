@@ -1,5 +1,5 @@
 ![alt](go/images/aetheronego.jpg)
-Open Source Radionics written in Golang and three.js
+Open Source [Radionics](go/docs/WhatIsRadionics.md) written in Golang and three.js
 
 # Download
 I will release compiled versions for different operating systems [here](https://github.com/isuretpolos/AetherOneGo/releases/latest).
