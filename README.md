@@ -4,6 +4,13 @@ Open Source [Radionics](go/docs/WhatIsRadionics.md) written in Golang and three.
 # Download
 I will release compiled versions for different operating systems [here](https://github.com/isuretpolos/AetherOneGo/releases/latest).
 
+# Start
+After unzipping the file, you can start the program by running the executable. The program will open a web browser and show the UI. You can also run the program in the terminal with the command `./aetheronego` (Linux) or `aetheronego.exe` (Windows). The program will start a local server on port 8080.
+```bash
+aetheronego
+```
+Be aware that especially for Windows, you need to allow the program in your firewall. Otherwise, the program will not work. Also the antivirus could block it. Just allow it. If you don't trust the executable, you can build it yourself. See the [Build](go/README.md#build) section. Or you can manually scan the executable with an antivirus program.
+
 # Versions
 - 0.2.3 Shadows bugfix
 - 0.2.0 Three.js / Vite / UI embedded in Go
