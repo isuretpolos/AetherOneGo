@@ -1,5 +1,9 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+// === Postprocessing ===
+import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 
 // === Setup Scene, Camera, Renderer ===
 const scene = new THREE.Scene();
@@ -11,6 +15,18 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.shadowMap.enabled = true;
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 document.body.appendChild(renderer.domElement);
+
+const composer = new EffectComposer(renderer);
+let renderPass = new RenderPass(scene, camera);
+
+// Configure bloom pass (you can tweak intensity later)
+const bloomPass = new UnrealBloomPass(
+    new THREE.Vector2(window.innerWidth, window.innerHeight),
+    1.0,   // strength
+    0.4,   // radius
+    0.85   // threshold
+);
+
 
 // Handle resize
 window.addEventListener('resize', () => {
@@ -101,6 +117,9 @@ loader.load(
             camera = gltf.cameras[0];
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
+            renderPass = new RenderPass(scene, camera);
+            composer.addPass(renderPass);
+            composer.addPass(bloomPass);
         }
 
         // Meshes and knobs
@@ -109,6 +128,8 @@ loader.load(
             if (node.name.startsWith('Knob')) {
                 knobs.push(node);
             }
+
+
 
 
             if (node.isMesh) {
@@ -160,8 +181,8 @@ loader.load(
 );
 
 // === Animation Loop ===
-function animate() {
+function animate(deltaTime) {
     requestAnimationFrame(animate);
-    renderer.render(scene, camera);
+    composer.render(deltaTime);
 }
 animate();
